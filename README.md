@@ -1,9 +1,9 @@
 Module Dumper
 ===
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/0214994ca6ea4c4b81081681a0b945f4)](https://www.codacy.com/gh/Scene-Collective/ps4-module-dumper/dashboard)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/)](https://www.codacy.com/gh/Scene-Collective/ps4-module-dumper/dashboard)
 
 ## Synopsis
-Dumps the decrypted modules from '/system', '/system_ex', '/update' and the root of the filesystem to a USB device.
+Dumps the decrypted modules from `/system`, `/system_ex`, `/update` and the root of the filesystem to a USB device.
 
 For the payloads built with the most recent firmware supported visit [this repo].
 

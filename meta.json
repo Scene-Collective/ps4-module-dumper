@@ -5,8 +5,8 @@
   "device": "PlayStation 4",
   "firmware": "",
   "description": {
-    "default": "Dumps the decrypted modules from '/system', '/system_ex', '/update' and the root of the filesystem to a USB device.",
-    "en": "Dumps the decrypted modules from '/system', '/system_ex', '/update' and the root of the filesystem to a USB device."
+    "default": "Dumps the decrypted modules from `/system`, `/system_ex`, `/update` and the root of the filesystem to a USB device.",
+    "en": "Dumps the decrypted modules from `/system`, `/system_ex`, `/update` and the root of the filesystem to a USB device."
   },
   "author": "",
   "url": "https://github.com/Scene-Collective/ps4-module-dumper",
