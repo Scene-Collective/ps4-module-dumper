@@ -65,14 +65,12 @@ int _main(struct thread *td) {
   printf_notification("Dumping Modules\nFW Version: %s\n Location: %s", fw_version, output_root);
   sceKernelSleep(5);
 
-  /*
   dump_dir_macro("/system", "%s/system");
   dump_dir_macro("/system_ex", "%s/system_ex");
   dump_dir_macro("/update", "%s/update");
   dump_file_macro("/mini-syscore.elf", "%s/mini-syscore.elf");
   dump_file_macro("/safemode.elf", "%s/safemode.elf");
   dump_file_macro("/SceSysAvControl.elf", "%s/SceSysAvControl.elf");
-  */
 
   // cleanup(output_root); // TODO: Recursively delete EMPTY directories from output_root
 
