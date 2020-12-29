@@ -1,6 +1,6 @@
 #include "ps4.h"
 
-char output_root[255] = { 0 };
+char output_root[255] = {0};
 
 int dump_dir_macro(char *src, char *dest) {
   char output_loc[255];
@@ -23,11 +23,11 @@ int dump_file_macro(char *src, char *dest) {
 int _main(struct thread *td) {
   UNUSED(td);
 
-  char fw_version[6] = { 0 };
-  char usb_name[64] = { 0 };
-  char usb_path[64] = { 0 };
-  char directory_base[255] = { 0 };
-  char completion_check[255] = { 0 };
+  char fw_version[6] = {0};
+  char usb_name[64] = {0};
+  char usb_path[64] = {0};
+  char directory_base[255] = {0};
+  char completion_check[255] = {0};
 
   initKernel();
   initLibc();
