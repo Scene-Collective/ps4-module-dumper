@@ -26,6 +26,7 @@ int _main(struct thread *td) {
   char fw_version[6] = { 0 };
   char usb_name[64] = { 0 };
   char usb_path[64] = { 0 };
+  char directory_base[255] = { 0 };
   char completion_check[255] = { 0 };
 
   initKernel();
@@ -47,9 +48,9 @@ int _main(struct thread *td) {
     } while (!wait_for_usb(usb_name, usb_path));
   }
 
-  sprintf(output_root, "%s/PS4", usb_path, fw_version);
-  mkdir(output_root, 0777);
-  sprintf(output_root, "%s/%s", output_root, fw_version);
+  sprintf(directory_base, "%s/PS4", usb_path);
+  mkdir(directory_base, 0777);
+  sprintf(output_root, "%s/%s", directory_base, fw_version);
 
   sprintf(completion_check, "%s/.complete", output_root);
   if (file_exists(completion_check)) {
