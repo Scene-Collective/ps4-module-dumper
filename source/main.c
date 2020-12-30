@@ -1,6 +1,28 @@
 #include "ps4.h"
 
 char output_root[255] = {0};
+int nthread_run;
+char notify_buf[512];
+
+void *nthread_func(void *arg) {
+  UNUSED(arg);
+  time_t t1, t2;
+  t1 = 0;
+  while (nthread_run) {
+    if (notify_buf[0]) {
+      t2 = time(NULL);
+      if ((t2 - t1) >= 20) {
+        t1 = t2;
+        systemMessage(notify_buf);
+      }
+    } else {
+      t1 = 0;
+    }
+    sceKernelSleep(1);
+  }
+
+  return NULL;
+}
 
 int dump_dir_macro(char *src, char *dest) {
   char output_loc[255];
@@ -31,6 +53,7 @@ int _main(struct thread *td) {
 
   initKernel();
   initLibc();
+  initPthread();
 
   jailbreak();
   mmap_patch();
@@ -38,14 +61,20 @@ int _main(struct thread *td) {
   initSysUtil();
 
   get_firmware_string(fw_version);
+  nthread_run = 1;
+  notify_buf[0] = '\0';
+  ScePthread nthread;
+  scePthreadCreate(&nthread, NULL, nthread_func, NULL, "nthread");
 
-  printf_notification("PS4 Module Dumper");
+  printf_notification("Running PS4 Module Dumper");
+  sceKernelSleep(5);
 
   if (!wait_for_usb(usb_name, usb_path)) {
-    printf_notification("Waiting for USB drive...");
+    sprintf(notify_buf, "Waiting for USB device...");
     do {
-      sceKernelSleep(2);
+      sceKernelSleep(1);
     } while (!wait_for_usb(usb_name, usb_path));
+    notify_buf[0] = '\0';
   }
 
   sprintf(directory_base, "%s/PS4", usb_path);
@@ -77,6 +106,8 @@ int _main(struct thread *td) {
   touch_file(completion_check);
 
   printf_notification("Done!");
+
+  nthread_run = 0;
 
   return 0;
 }
