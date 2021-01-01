@@ -49,6 +49,7 @@ int _main(struct thread *td) {
   char usb_name[64] = {0};
   char usb_path[64] = {0};
   char directory_base[255] = {0};
+  char firmware_base[255] = {0};
   char completion_check[255] = {0};
 
   initKernel();
@@ -61,13 +62,13 @@ int _main(struct thread *td) {
   initSysUtil();
 
   get_firmware_string(fw_version);
+
   nthread_run = 1;
   notify_buf[0] = '\0';
   ScePthread nthread;
   scePthreadCreate(&nthread, NULL, nthread_func, NULL, "nthread");
 
-  printf_notification("Running PS4 Module Dumper");
-  sceKernelSleep(5);
+  printf_notification("Running Module Dumper");
 
   if (!wait_for_usb(usb_name, usb_path)) {
     sprintf(notify_buf, "Waiting for USB device...");
@@ -79,7 +80,9 @@ int _main(struct thread *td) {
 
   sprintf(directory_base, "%s/PS4", usb_path);
   mkdir(directory_base, 0777);
-  sprintf(output_root, "%s/%s", directory_base, fw_version);
+  sprintf(firmware_base, "%s/%s", directory_base, fw_version);
+  mkdir(firmware_base, 0777);
+  sprintf(output_root, "%s/modules", firmware_base);
 
   sprintf(completion_check, "%s/.complete", output_root);
   if (file_exists(completion_check)) {
@@ -91,8 +94,7 @@ int _main(struct thread *td) {
 
   mkdir(output_root, 0777);
 
-  printf_notification("Dumping Modules\nFW Version: %s\n Location: %s", fw_version, output_root);
-  sceKernelSleep(5);
+  printf_notification("USB device detected.\n\nStarting module dumping to %s.", usb_name);
 
   dump_dir_macro("/system", "%s/system");
   dump_dir_macro("/system_ex", "%s/system_ex");
@@ -101,11 +103,11 @@ int _main(struct thread *td) {
   dump_file_macro("/safemode.elf", "%s/safemode.elf");
   dump_file_macro("/SceSysAvControl.elf", "%s/SceSysAvControl.elf");
 
-  // cleanup(output_root); // TODO: Recursively delete EMPTY directories from output_root
+  //cleanup(output_root);
 
   touch_file(completion_check);
 
-  printf_notification("Done!");
+  printf_notification("Modules dumped successfully!");
 
   nthread_run = 0;
 
