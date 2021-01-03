@@ -1,6 +1,7 @@
 #include "ps4.h"
 
 int nthread_run = 1;
+int notify_time = 20;
 char notify_buf[512] = {0};
 
 void *nthread_func(void *arg) {
@@ -9,7 +10,7 @@ void *nthread_func(void *arg) {
   while (nthread_run) {
     if (notify_buf[0]) {
       time_t t2 = time(NULL);
-      if ((t2 - t1) >= 20) {
+      if ((t2 - t1) >= notify_time) {
         t1 = t2;
         systemMessage(notify_buf);
       }
