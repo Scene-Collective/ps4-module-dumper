@@ -61,6 +61,7 @@ int _main(struct thread *td) {
   get_firmware_string(fw_version);
 
   ScePthread nthread;
+  memset_s(&nthread, sizeof(ScePthread), 0, sizeof(ScePthread));
   scePthreadCreate(&nthread, NULL, nthread_func, NULL, "nthread");
 
   printf_notification("Running Module Dumper");
