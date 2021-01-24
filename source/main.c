@@ -1,3 +1,7 @@
+//#define DEBUG_SOCKET
+#define DEBUG_IP "192.168.2.2"
+#define DEBUG_PORT 9023
+
 #include "ps4.h"
 
 int nthread_run = 1;
@@ -12,7 +16,7 @@ void *nthread_func(void *arg) {
       time_t t2 = time(NULL);
       if ((t2 - t1) >= notify_time) {
         t1 = t2;
-        systemMessage(notify_buf);
+        printf_notification("%s", notify_buf);
       }
     } else {
       t1 = 0;
@@ -52,6 +56,11 @@ int _main(struct thread *td) {
   initKernel();
   initLibc();
   initPthread();
+
+#ifdef DEBUG_SOCKET
+  initNetwork();
+  DEBUG_SOCK = SckConnect(DEBUG_IP, DEBUG_PORT);
+#endif
 
   jailbreak();
   mmap_patch();
@@ -105,6 +114,11 @@ int _main(struct thread *td) {
   touch_file(completion_check);
 
   printf_notification("Modules dumped successfully!");
+
+#ifdef DEBUG_SOCKET
+  printf_socket("\nClosing socket...\n\n");
+  SckClose(DEBUG_SOCK);
+#endif
 
   return 0;
 }
